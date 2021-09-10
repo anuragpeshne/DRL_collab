@@ -25,7 +25,7 @@ a decentralized manner.
 | sigma          | OU Noise sigma                       | 0.1   |
 
 ### Model architectures
-![MADDPG Model](./MADDPG model.drawio.png "MADDPG Model")
+![MADDPG Model](./images/MADDPG_model.png "MADDPG Model")
 - Actor
 
 | Layer | Input      | Output      |
@@ -57,7 +57,7 @@ a decentralized manner.
 9. Rerun - solved in 998 episodes.
 
 ## Plot of Rewards
-![MADDPG Score Graph](./score_graph.png "MADDPG Tennis Score Graph")
+![MADDPG Score Graph](./images/score_graph.png "MADDPG Tennis Score Graph")
 
 The agent took 998 episodes to solve the environment.
 
