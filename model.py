@@ -12,7 +12,7 @@ def hidden_init(layer):
 class Actor(nn.Module):
     """Actor (Policy) Model."""
 
-    def __init__(self, state_size, action_size, seed, fc1_units=128, fc2_units=128):
+    def __init__(self, state_size, action_size, seed, fc1_units=32, fc2_units=32):
         """Initialize parameters and build model.
         Params
         ======
@@ -50,7 +50,7 @@ class Actor(nn.Module):
 class Critic(nn.Module):
     """Critic (Value) Model."""
 
-    def __init__(self, state_size, action_size, seed, fcs1_units=128, fc2_units=128):
+    def __init__(self, state_size, action_size, num_agents, seed, fcs1_units=32, fc2_units=32):
         """Initialize parameters and build model.
         Params
         ======
@@ -62,10 +62,10 @@ class Critic(nn.Module):
         """
         super(Critic, self).__init__()
         self.seed = torch.manual_seed(seed)
-        self.fcs1 = nn.Linear(state_size, fcs1_units)
+        self.fcs1 = nn.Linear(state_size * num_agents, fcs1_units)
         # apply Batch Normalization on the first layer output
         self.bn1 = nn.BatchNorm1d(fcs1_units)
-        self.fc2 = nn.Linear(fcs1_units+action_size, fc2_units)
+        self.fc2 = nn.Linear(fcs1_units+(action_size * num_agents), fc2_units)
         self.fc3 = nn.Linear(fc2_units, 1)
         self.reset_parameters()
 
@@ -76,8 +76,6 @@ class Critic(nn.Module):
 
     def forward(self, state, action):
         """Build a critic (value) network that maps (state, action) pairs -> Q-values."""
-        if state.dim() == 1:
-            state = torch.unsqueeze(state, 0)
         xs = F.leaky_relu(self.fcs1(state))
         # apply Batch Normalization
         xs = self.bn1(xs)
